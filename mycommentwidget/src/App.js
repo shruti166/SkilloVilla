@@ -1,14 +1,14 @@
-import Comment from './components/Comment';
-import './App.css';
-import { useState } from 'react';
-import currentUser from './mockData/currentUser';
-import CommentList from './components/CommentList';
+import Comment from "./components/Comment";
+import "./App.css";
+import { useState } from "react";
+import currentUser from "./mockData/currentUser";
+import CommentList from "./components/CommentList";
 
 function App() {
-  const [comments, setComments] = useState([])
-  
-  const addComment = ({id, commentData, date}) => {
-    setComments(comments => ([
+  const [comments, setComments] = useState([]);
+
+  const addComment = ({ id, commentData, date }) => {
+    setComments((comments) => [
       ...comments,
       {
         id: id,
@@ -17,21 +17,30 @@ function App() {
         commentData: commentData,
         date: String(new Date()),
         likes: 0,
-        nestedComments: []
-      }
-     
-    ]));
+        nestedComments: [],
+      },
+    ]);
     console.log(comments);
-  }
+  };
   return (
     <div className="App">
       <h1>MyCommentWidget</h1>
-      <Comment addComment={addComment}/>
+      <Comment addComment={addComment} />
       {comments.map((comment) => {
-        return (<div key={comment.id}>
-          <CommentList id = {comment.id} profilePic = {comment.profilePic} name = {comment.name} commentData = {comment.commentData} date = {comment.date} likes = {comment.likes} nestedComments = {comment.nestedComments}/>
-        </div>)
-      }) }
+        return (
+          <div key={comment.id}>
+            <CommentList
+              id={comment.id}
+              profilePic={comment.profilePic}
+              name={comment.name}
+              commentData={comment.commentData}
+              date={comment.date}
+              likes={comment.likes}
+              nestedComments={comment.nestedComments}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

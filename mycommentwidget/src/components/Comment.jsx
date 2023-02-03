@@ -7,7 +7,7 @@ export default function Comment({ addComment }) {
   const [commentData, setCommentData] = useState("");
   return (
     <div className="add-comment-div">
-      <img src={currentUserComment().profilePic} alt="" />
+      <img src={currentUserComment().profilePic} alt="" style = {{width: "50px", height: "50px"}}/>
       <input
         type="text"
         placeholder="Join the discussion..."

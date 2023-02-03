@@ -19,9 +19,9 @@ export default function CommentList({
 
   const time = moment().startOf(date).fromNow();
   return (
-    <div style={{ marginLeft: "3%" }}>
+    <div >
       <div className="mainDiv" >
-        <img src={profilePic} alt=""/>
+        <img src={profilePic} alt="" style = {{width: "50px", height: "50px"}}/>
         <div className="comment-div" >
           <p style={{ color: "#4cbaff", fontWeight: "900" }}>{name}</p>
           <span> {time} </span>
@@ -47,6 +47,7 @@ export default function CommentList({
           onClick={() => {
             if (likeStatus) {
               setLikesCount((curr) => curr - 1);
+              setLikeStatus(false);
               
             }
           }}
