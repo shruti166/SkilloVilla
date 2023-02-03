@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+import Comment from './components/Comment';
 import './App.css';
+import { useState } from 'react';
+import currentUser from './mockData/currentUser';
+import CommentList from './components/CommentList';
 
 function App() {
+  const [comments, setComments] = useState([])
+  
+  const addComment = ({id, commentData, date}) => {
+    setComments(comments => ([
+      ...comments,
+      {
+        id: id,
+        profilePic: currentUser().profilePic,
+        name: currentUser().name,
+        commentData: commentData,
+        date: String(new Date()),
+        likes: 0,
+        nestedComments: []
+      }
+     
+    ]));
+    console.log(comments);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>MyCommentWidget</h1>
+      <Comment addComment={addComment}/>
+      {comments.map((comment) => {
+        return (<div key={comment.id}>
+          <CommentList id = {comment.id} profilePic = {comment.profilePic} name = {comment.name} commentData = {comment.commentData} date = {comment.date} likes = {comment.likes} nestedComments = {comment.nestedComments}/>
+        </div>)
+      }) }
     </div>
   );
 }
