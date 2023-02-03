@@ -35,7 +35,7 @@ export default function CommentList({
           onClick={() => {
             if (!likeStatus) {
               setLikesCount((curr) => curr + 1);
-              setLikeStatus((curr) => !curr);
+              setLikeStatus(true);
             }
           }}
         >
@@ -47,7 +47,7 @@ export default function CommentList({
           onClick={() => {
             if (likeStatus) {
               setLikesCount((curr) => curr - 1);
-              setLikeStatus((curr) => !curr);
+              
             }
           }}
         >
