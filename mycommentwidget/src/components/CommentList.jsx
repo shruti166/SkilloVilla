@@ -20,9 +20,9 @@ export default function CommentList({
   const time = moment().startOf(date).fromNow();
   return (
     <div style={{ marginLeft: "3%" }}>
-      <div className="mainDiv" style={{ display: "flex" }}>
-        <img src={profilePic} alt="" />
-        <div className="comment-div" style={{ display: "flex" }}>
+      <div className="mainDiv" >
+        <img src={profilePic} alt=""/>
+        <div className="comment-div" >
           <p style={{ color: "#4cbaff", fontWeight: "900" }}>{name}</p>
           <span> {time} </span>
         </div>
