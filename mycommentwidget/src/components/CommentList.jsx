@@ -3,7 +3,7 @@ import { useState } from "react";
 import moment from "moment";
 import EditComment from "./EditComment";
 import Reply from "./Reply";
-import NestedComment from "./NestedComment";
+
 
 export default function CommentList({
   id,
@@ -20,11 +20,13 @@ export default function CommentList({
   const [edited, setEdited] = useState(commentData);
   const [replyStatus, setReplyStatus] = useState(false);
   const [nestedComments, setNestedComments] = useState([]);
+  
 
   const time = moment().startOf(date).fromNow();
-  const deleteSubComment = (id) => {
-    setNestedComments((comments) =>
-      comments.filter((comment) => comment.id !== id)
+
+  const deleteComment = (id) => {
+    setNestedComments((nestedComments) =>
+      nestedComments.filter((comment) => comment.id != id)
     );
   };
 
@@ -86,7 +88,7 @@ export default function CommentList({
                   Edit
                 </span>
                 <span> | </span>
-                <span className="comment-action">Delete</span>
+                <span className="comment-action" onClick={() => deleteComment(id)}>Delete</span>
                 <span> | </span>
               </span>
             </div>
@@ -164,7 +166,7 @@ export default function CommentList({
                             Edit
                           </span>
                           <span> | </span>
-                          <span className="comment-action">Delete</span>
+                          <span className="comment-action" onClick={() => deleteComment(id)}>Delete</span>
                           <span> | </span>
                         </span>
                       </div>
