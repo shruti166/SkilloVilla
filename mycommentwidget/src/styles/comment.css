@@ -1,0 +1,33 @@
+.mainCommentDiv
+{
+   
+    margin: auto;
+}
+
+.mainCommentDiv > img
+{
+    height: 50px;
+    width: 50px;
+    margin-right: 1.5%;
+}
+
+.comment-content-div
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.comment-content-third-row
+{
+    display: flex;
+    flex-wrap: nowrap;
+    color: grey;
+}
+
+.comment-action:hover
+{
+    cursor: pointer;
+}
+

@@ -1,0 +1,36 @@
+.addDiv
+{
+    
+    display: flex;
+    
+}
+
+.addDiv > img
+{
+    height: 50px;
+    width: 50px;
+    object-fit: contain;
+    margin-right: 1.5%;
+}
+
+.addDiv > textarea
+{
+    margin-right: 1.5%;
+    border-color: grey;
+}
+
+.addDiv > button
+{
+    background-color: "4DBFFB";
+    font-weight: 800;
+    border-radius: 8px;
+    border: none;
+    width: 80px;
+    height: 35px;
+    align-self: center;
+}
+
+.addDiv > button:hover
+{
+    cursor: pointer;
+}

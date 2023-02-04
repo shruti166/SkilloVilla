@@ -1,45 +1,41 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import currentUser from '../mockData/currentUser.js'
+import getCurrentUserDetails from '../mockData/getCurrentUserDetails';
+import '../styles/reply.css';
 
+function Reply({ isVisible, username, setSubComments, setCanReply }) {
+    const [commentContent, setCommentContent] = useState('');
 
-
-function ReplyComment({name, setNestedComments, nestedComments, setReplyStatus }) {
-    const [commentContent, setCommentContent] = useState("");
-
-   
+    if (isVisible)
         return (
-            <div className='reply-comment-div'>
-                <img src={currentUser().profilePic} alt='Pic' />
+            <div className='replyDiv'>
+                <img src={getCurrentUserDetails().profilePic} alt='Pic' height="50px" width = "50px"/>
                 <textarea cols='75' placeholder='Join the discussion...' onInput={e => setCommentContent(e.target.value)} />
                 <div>
-                    <div onClick={() => setReplyStatus(false)}>Cancel</div>
+                    <div onClick={() => setCanReply(curr => !curr)}>Cancel</div>
                     <button onClick={() => {
                         if (commentContent.length > 0) {
-                            setNestedComments( nestedComments => 
-                                [...nestedComments, 
+                            setSubComments(curr => [
+                                ...curr,
                                 {
                                     id: uuidv4(),
-                                    profilePicUrl: currentUser().profilePic,
-                                    name: name,
+                                    profilePic: getCurrentUserDetails().profilePic,
+                                    username: username,
                                     commentContent: commentContent,
                                     likes: 0,
-                                    date: new Date(),
+                                    commentDateTime: new Date(),
+                                    liked: false,
                                     currentSubComments: []
                                 }
-                               
                             ]);
-                            
-                            setReplyStatus(false);
+                            setCanReply(curr => !curr);
                         }
-                        
                     }}>Post</button>
-                    
-                   
                 </div>
             </div>
         );
-    
+    else
+        return null;
 }
 
-export default ReplyComment;
+export default Reply;
