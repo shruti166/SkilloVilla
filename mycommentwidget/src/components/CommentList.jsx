@@ -1,18 +1,26 @@
 import React from "react";
 import {useState} from "react";
 import moment from "moment";
+import EditComment from "./EditComment";
 
 export default function CommentList({id, profilePic, name, commentData, date, likes, nestedComment}) {
 
   const [editStatus, setEditStatus] = useState(false);
   const [likeStatus, setLikeStatus] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [edited, setEdited] = useState(commentData);
   const time = moment().startOf(date).fromNow(); 
-  return <div>
+  
+
+  
+        
+      
+  return <React.Fragment>
+    
     <div className = "mainDiv">
       <img src = {profilePic} alt = "" height="50px"/>
-      <span>{name}</span>
-      <span>  {time} </span>
+      <span style={{color: ""}}>{name}</span>
+      <span style={{color: "gray"}}>  {time} </span>
       
     </div>
     
@@ -20,7 +28,7 @@ export default function CommentList({id, profilePic, name, commentData, date, li
     
     <div className="actions-row">
       <span>{likesCount}</span>
-      <span className="material-symbols-outlined comment-action" onClick={()=> {
+      <span className="material-symbols-outlined comment-action" style = {{ color: likeStatus ? "blue" : "black"}} onClick={()=> {
         if(!likeStatus) {
           setLikesCount(curr => curr + 1)
           setLikeStatus(true);
@@ -35,7 +43,17 @@ export default function CommentList({id, profilePic, name, commentData, date, li
           setLikeStatus(false);
         }}}>
         expand_more</span>
-    </div>
-  </div>;
+        <span onClick = {() => setEditStatus(true)}>Edit</span>
+        <span> | </span>
+        <span>Delete</span>
+        <span> | </span>
+        <span>Reply</span>
+    </div> 
+
+    <EditComment edited = {edited} />
+      
+
+</React.Fragment>
+    
 }
 
