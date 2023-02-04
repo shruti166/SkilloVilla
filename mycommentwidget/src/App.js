@@ -36,8 +36,9 @@ function App() {
               commentData={comment.commentData}
               date={comment.date}
               likes={comment.likes}
-              nestedComments={comment.nestedComments}
+              nestedComment={comment.nestedComment}
             />
+            
           </div>
         );
       })}

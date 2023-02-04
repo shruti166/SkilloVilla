@@ -1,100 +1,118 @@
-import React from 'react';
-import EditComment from './EditComment';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import CommentList from './CommentList';
+import Reply from './Reply';
+import EditComment from './EditComment';
+import '../styles/comment.css';
 
-export default function NestedComment({
-    id,
-    profilePic,
-    name,
-    date,
-    commentData,
-    likes,
-    nestedComments,
-  }) {
-    const [commentValue, setCommentValue] = useState();
-    const [likesCount, setLikesCount] = useState(likes);
-    const [subComments, setSubComments] = useState(nestedComments);
-    const [editStatus, setEditStatus] = useState(false);
-    const [likeStatus, setLikeStatus] = useState(false);
-  
-    const time = moment().startOf(date).fromNow();
-  
+
+function NestedComment({ id, commentContent, username, profilePicUrl, currentNestedComments, commentDateTime, likes, liked, deleteNestedComment }) {
+    const [noOfLikes, setNoOfLikes] = useState(likes);
+    const [isLiked, setIsLiked] = useState(liked);
+    const [currentCommentContent, setCurrentCommentContent] = useState(commentContent);
+    const [NestedComments, setNestedComments] = useState(currentNestedComments);
+    const [canReply, setCanReply] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const time = moment().startOf(commentDateTime).fromNow()
     const deleteComment = (commentId) => {
-        setSubComments(comments => comments.filter(comment => comment.id !== commentId));
+        setNestedComments(comments => comments.filter(comment => comment.id !== commentId));
     };
 
     return (
-      <div>
-        {!editStatus ? (
-          <div className="mainDiv">
-            <img
-              src={profilePic}
-              alt=""
-              style={{ width: "50px", height: "50px" }}
-            />
-            <div className="comment-div">
-              <div>
-                <p style={{ color: "#4cbaff", fontWeight: "900" }}>{name}</p>
-                <span> {time} </span>
-              </div>
-  
-              <div>{commentValue}</div>
-              <span className="actions-row">
-                {likesCount}
-                <span
-                  className="material-symbols-outlined comment-action"
-                  onClick={() => {
-                    if (!likeStatus) {
-                      setLikesCount((curr) => curr + 1);
-                      setLikeStatus(true);
-                    }
-                  }}
-                >
-                  expand_less
-                </span>
-                <span>|</span>
-                <span
-                  className="material-symbols-outlined comment-action"
-                  onClick={() => {
-                    if (likeStatus) {
-                      setLikesCount((curr) => curr - 1);
-                      setLikeStatus(false);
-                    }
-                  }}
-                >
-                  expand_more
-                </span>
-                <span onClick={() => setSubComments(nestedComments)}>REPLY</span>
-                <span onClick={() => setEditStatus(true)}>EDIT</span>
-                <span onClick = {deleteComment(id)}>DELETE</span>
-              </span>
-            </div>
-          </div>
-        ) : (
-          <EditComment profilePic={profilePic} commentValue = {(e) => setCommentValue(e)} setEditStatus={setEditStatus} />
-        )}
-        {subComments.length > 0
-          ? subComments.map((comment) => (
-              <CommentList
-                key={comment.id}
-                id={comment.id}
-                commentContent={comment.commentContent}
-                username={comment.username}
-                profilePic={comment.profilePic}
-                currentSubComments={comment.subComments || []}
-                date = {comment.date}
-                likes={comment.likes}
-               
-                deleteSubComment={(subCommentId) =>
-                  deleteComment(subCommentId)
+        <React.Fragment>
+            <div style={{ marginLeft: '3%' }}>
+                {!isEditing ?
+                    <div className='comment-div'>
+                        <img src={profilePicUrl} alt='Pic' />
+                        <div className='comment-content-div'>
+                            <div>
+                                <span style={{ color: '#2AC0D1', fontWeight: 500 }}>{username}</span>
+                                <span className='dot' style={{ color: 'grey' }}>.</span>
+                                <span style={{ color: 'grey', fontSize: 12 }}>{time}</span>
+                            </div>
+                            <span>{currentCommentContent}</span>
+                            <span className='comment-content-third-row'>
+                                {noOfLikes}
+                                <span
+                                    className='material-symbols-outlined comment-action'
+                                    style={{ color: isLiked ? 'blue' : 'grey' }}
+                                    onClick={() => {
+                                        if (!isLiked) {
+                                            setNoOfLikes(curr => curr + 1);
+                                            setIsLiked(curr => !curr);
+                                        }
+                                    }}
+                                >
+                                    expand_less
+                                </span>
+                                <span>|</span>
+                                <span
+                                    className='material-symbols-outlined comment-action'
+                                    onClick={() => {
+                                        if (isLiked) {
+                                            setNoOfLikes(curr => curr - 1);
+                                            setIsLiked(curr => !curr);
+                                        }
+                                    }}
+                                >
+                                    expand_more
+                                </span>
+                                <span className='dot'>.</span>
+                                <span
+                                    className='comment-action'
+                                    style={{ color: canReply ? 'blue' : 'grey' }}
+                                    onClick={() => {
+                                        setCanReply(curr => !curr);
+                                    }}
+                                >Reply</span>
+                                <span className='dot'>.</span>
+                                <span
+                                    className='comment-action'
+                                    style={{ color: isEditing ? 'blue' : 'grey' }}
+                                    onClick={() => {
+                                        setIsEditing(curr => !curr);
+                                    }}
+                                >Edit</span>
+                                <span className='dot'>.</span>
+                                <span className='comment-action' onClick={() => deleteNestedComment(id)}>Delete</span>
+                                <span className='dot'>.</span>
+                            </span>
+                        </div>
+                    </div>
+                    :
+                    <EditComment
+                        isVisible={isEditing}
+                        profilePicUrl={profilePicUrl}
+                        currentCommentContent={currentCommentContent}
+                        setCurrentCommentContent={(x) => setCurrentCommentContent(x)}
+                        setIsEditing={setIsEditing}
+                    />}
+                {
+                    NestedComments.length > 0 ?
+                        NestedComments.map(comment =>
+                        (
+                            <CommentList
+                                key={comment.id}
+                                id={comment.id}
+                                currentCommentContent={comment.commentContent}
+                                username={comment.username}
+                                profilePicUrl={comment.profilePicUrl}
+                                currentNestedComments={comment.NestedComments || []}
+                                commentDateTime={comment.commentDateTime}
+                                likes={comment.likes}
+                                liked={comment.liked}
+                                deleteComment={(id) => deleteComment(id)}
+                            />
+                        )
+                        )
+
+                        :
+                        null
                 }
-              />
-             
-            ))
-          : null}
-      </div>
+            </div>
+            <Reply isVisible={canReply} username={username} setNestedComments={setNestedComments} setCanReply={setCanReply} />
+        </React.Fragment>
     );
-  }
-  
+}
+
+export default NestedComment;
