@@ -20,7 +20,7 @@ function App() {
         nestedComments: [],
       },
     ]);
-    console.log(comments);
+    
   };
   return (
     <div className="App">
